@@ -3,3 +3,5 @@ __pycache__/
 *.pyc
 env.py
 blog/fixtures/
+db.sqlite3
+staticfiles/
