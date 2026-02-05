@@ -28,11 +28,12 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 SECRET_KEY = 'django-insecure-f2ue6q_e^&*8i17u+9h#b%_$p^z@1@46rauf+7#akiz5^2vm2n'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
+    ".herokuapp.com",
     ".herokuapp.com",
 ]
 
@@ -49,6 +50,7 @@ INSTALLED_APPS = [
     'django_summernote',
 
     'blog',
+    'about',
 ]
 
 MIDDLEWARE = [
