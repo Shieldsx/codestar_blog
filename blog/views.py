@@ -1,9 +1,12 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from django.contrib import messages
-from requests import post
-from .models import Post
+from django.urls import reverse
+from django.http import HttpResponseRedirect
+
+from .models import Post, Comment
 from .forms import CommentForm
+
 
 # Create your views here.
 class PostList(generic.ListView):
@@ -54,3 +57,26 @@ def post_detail(request, slug):
             "comment_form": comment_form,
         },
     )
+
+def comment_edit(request, slug, comment_id):
+    """
+    View to edit comments
+    """
+    if request.method == "POST":
+        queryset = Post.objects.filter(status=1)
+        post = get_object_or_404(queryset, slug=slug)
+        comment = get_object_or_404(Comment, pk=comment_id)
+    else:
+        comment_form = CommentForm(data=request.POST, instance=comment)
+
+        if comment_form.is_valid() and comment.author == request.user:
+            edited_comment = comment_form.save(commit=False)
+            edited_comment.post = post
+            edited_comment.approved = False
+            edited_comment.save()
+            messages.success(request, "Comment updated!")
+        else:
+            messages.error(request, "Error updating comment!")
+
+    return HttpResponseRedirect(reverse("post_detail", args=[slug]))
+    
